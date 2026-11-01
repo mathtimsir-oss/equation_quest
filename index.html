@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Law Ting Pong Secondary School - 35th Anniversary Equation Quest</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff9e6 0%, #fef3c7 50%, #fde68a 100%);
+            color: #1e293b;
+            user-select: none;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .font-header {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Bright Celebratory Card Frames */
+        .game-card {
+            background: #ffffff;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border-radius: 1.5rem;
+        }
+
+        /* Sparkling Gold Box (x Variable) */
+        .gold-x-box {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            border: 2px solid #fff;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gold-x-box::after {
+            content: '✨';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            font-size: 10px;
+            animation: pulseSparkle 1.5s infinite alternate;
+        }
+
+        @keyframes pulseSparkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Granite Stone (Constant Units) */
+        .granite-stone {
+            background: radial-gradient(circle at 30% 30%, #94a3b8 0%, #475569 100%);
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 3px 8px rgba(71, 85, 105, 0.3);
+            border-radius: 50%;
+            color: #ffffff;
+            font-weight: 800;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Level Selector Tabs */
+        .tab-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
+            box-shadow: 0 6px 16px rgba(217, 119, 6, 0.35);
+            border-color: #f59e0b;
+        }
+
+        /* Interactive Action Buttons */
+        .action-btn {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            color: #334155;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: #f59e0b;
+            color: #d97706;
+            box-shadow: 0 6px 12px -2px rgba(245, 158, 11, 0.2);
+        }
+        .action-btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+        .action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: #f1f5f9;
+        }
+
+        /* Pop in animation */
+        .pop-anim {
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-3 md:p-6">
+
+    <!-- SCHOOL BRANDING & 35TH ANNIVERSARY BANNER -->
+    <header class="w-full max-w-5xl bg-white border-2 border-amber-300 rounded-2xl p-4 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+        <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-900 font-extrabold font-header text-xl shadow-md border-2 border-amber-200">
+                35
+            </div>
+            <div>
+                <h1 class="font-header text-xl md:text-2xl font-bold text-slate-800 tracking-wide">LAW TING PONG SECONDARY SCHOOL</h1>
+                <p class="text-xs md:text-sm font-semibold text-amber-600 flex items-center gap-1.5">
+                    <span>🎉 35th Anniversary Theme: <span class="font-bold underline decoration-amber-400">Composing a Vivid Life</span> 🎉</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- STATS & CONTROLS -->
+        <div class="flex items-center gap-4">
+            <!-- Lives Hearts -->
+            <div id="hearts-container" class="flex gap-1 text-red-500 text-xl">
+                <i class="fa-solid fa-heart drop-shadow"></i>
+                <i class="fa-solid fa-heart drop-shadow"></i>
+                <i class="fa-solid fa-heart drop-shadow"></i>
+            </div>
+
+            <!-- Timer Badge -->
+            <div class="flex items-center gap-2 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
+                <i class="fa-solid fa-stopwatch text-amber-500 text-lg"></i>
+                <span id="timer-text" class="font-mono text-base font-bold text-amber-900">45s</span>
+            </div>
+
+            <!-- Restart Button -->
+            <button onclick="resetGame()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-700 transition" title="Restart Round">
+                <i class="fa-solid fa-rotate-right text-base"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- LEVEL SELECTION TABS -->
+    <div class="w-full max-w-5xl flex gap-3 mb-4">
+        <button id="tab-lvl-1" onclick="switchLevelTab(1)" class="tab-btn active flex-1 py-3 px-4 rounded-xl border-2 border-slate-200 bg-white font-header font-bold text-sm md:text-base text-slate-600 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-scale-balanced"></i> Level 1: Basic Equations
+        </button>
+        <button id="tab-lvl-2" onclick="switchLevelTab(2)" class="tab-btn flex-1 py-3 px-4 rounded-xl border-2 border-slate-200 bg-white font-header font-bold text-sm md:text-base text-slate-600 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-brackets-curly"></i> Level 2: Brackets & Both Sides
+        </button>
+    </div>
+
+    <!-- MAIN GAME CANVAS -->
+    <main class="w-full max-w-5xl game-card p-4 md:p-6 flex flex-col justify-between items-center relative min-h-[520px]">
+        
+        <!-- QUESTION PROGRESS & EQUATION HEADER -->
+        <div class="w-full flex flex-col items-center z-10 mb-2">
+            <div class="w-full flex justify-between items-center mb-2 px-2">
+                <span id="question-progress" class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-300">
+                    Question 1 / 3
+                </span>
+                <span id="score-display" class="text-xs font-bold text-slate-500">
+                    Score: <span id="score-val" class="text-amber-600 font-extrabold text-sm">0</span>
+                </span>
+            </div>
+
+            <!-- Active Equation Display Box -->
+            <div id="active-formula" class="px-8 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 text-slate-950 font-mono text-2xl md:text-3xl font-black shadow-md tracking-wider border-2 border-white">
+                2(x + 1) = x + 6
+            </div>
+            <p id="formula-hint" class="text-xs font-semibold text-amber-700 mt-2 bg-amber-50 px-4 py-1 rounded-full border border-amber-200/60">
+                Perform the same operation on both sides to solve for x!
+            </p>
+        </div>
+
+        <!-- PERFECTLY BALANCED MECHANICAL SCALE DISPLAY -->
+        <div class="w-full flex-1 flex flex-col justify-center items-center my-4 relative">
+            <div class="w-full max-w-2xl relative flex flex-col items-center">
+                
+                <!-- Center Fulcrum Pillar -->
+                <div class="w-10 h-10 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full flex items-center justify-center z-20 shadow-md border-2 border-white">
+                    <div class="w-3 h-3 bg-white rounded-full"></div>
+                </div>
+
+                <!-- Horizontal Balance Bar (Fixed Level - Always Balanced) -->
+                <div class="w-full h-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 rounded-full relative flex justify-between items-center shadow-md">
+                    <div class="w-1 h-10 bg-amber-600 absolute left-8 top-3"></div>
+                    <div class="w-1 h-10 bg-amber-600 absolute right-8 top-3"></div>
+                </div>
+
+                <!-- Pans Container -->
+                <div class="w-full flex justify-between items-start pt-8 px-2 md:px-4">
+                    
+                    <!-- LEFT PAN -->
+                    <div class="flex flex-col items-center w-5/12">
+                        <div id="left-pan-items" class="min-h-[110px] w-full bg-slate-50/80 border-2 border-amber-200 rounded-2xl p-3 flex flex-wrap items-center justify-center gap-2 shadow-inner">
+                            <!-- Injected dynamically -->
+                        </div>
+                        <div class="w-36 md:w-44 h-12 bg-gradient-to-b from-amber-400 to-amber-600 rounded-b-3xl shadow-md border-t-2 border-white flex items-center justify-center mt-1">
+                            <span class="font-header text-xs text-white font-bold tracking-wider">LEFT SIDE</span>
+                        </div>
+                    </div>
+
+                    <!-- EQUALS SYMBOL -->
+                    <div class="self-center my-auto">
+                        <div class="w-10 h-10 rounded-full bg-amber-500 text-white font-header font-black text-xl flex items-center justify-center shadow-md">
+                            =
+                        </div>
+                    </div>
+
+                    <!-- RIGHT PAN -->
+                    <div class="flex flex-col items-center w-5/12">
+                        <div id="right-pan-items" class="min-h-[110px] w-full bg-slate-50/80 border-2 border-amber-200 rounded-2xl p-3 flex flex-wrap items-center justify-center gap-2 shadow-inner">
+                            <!-- Injected dynamically -->
+                        </div>
+                        <div class="w-36 md:w-44 h-12 bg-gradient-to-b from-amber-400 to-amber-600 rounded-b-3xl shadow-md border-t-2 border-white flex items-center justify-center mt-1">
+                            <span class="font-header text-xs text-white font-bold tracking-wider">RIGHT SIDE</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTION DASHBOARD -->
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+            
+            <!-- STEP 1: BRACKET EXPANSION -->
+            <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200 flex flex-col items-center justify-center">
+                <span class="text-xs font-header text-amber-800 uppercase font-bold mb-2">Step 1: Brackets</span>
+                <button id="btn-expand" onclick="applyOperation('expand', 0)" class="action-btn w-full py-2.5 px-3 rounded-xl font-header text-xs font-bold flex items-center justify-center gap-1.5" disabled>
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Expand Brackets
+                </button>
+            </div>
+
+            <!-- STEP 2: SUBTRACT VARIABLES (x) -->
+            <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200 flex flex-col items-center">
+                <span class="text-xs font-header text-amber-800 uppercase font-bold mb-2">Subtract Variables</span>
+                <div class="grid grid-cols-4 gap-1.5 w-full">
+                    <button id="btn-sub-1x" onclick="applyOperation('sub_var', 1)" class="action-btn py-2 rounded-lg text-xs font-bold">- x</button>
+                    <button id="btn-sub-2x" onclick="applyOperation('sub_var', 2)" class="action-btn py-2 rounded-lg text-xs font-bold">- 2x</button>
+                    <button id="btn-sub-3x" onclick="applyOperation('sub_var', 3)" class="action-btn py-2 rounded-lg text-xs font-bold">- 3x</button>
+                    <button id="btn-sub-5x" onclick="applyOperation('sub_var', 5)" class="action-btn py-2 rounded-lg text-xs font-bold">- 5x</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: STONES & DIVISION -->
+            <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200 flex flex-col items-center justify-between gap-1.5">
+                <div class="flex items-center gap-1.5 w-full">
+                    <span class="text-[10px] font-header font-bold text-slate-500 w-12">STONES:</span>
+                    <button onclick="applyOperation('sub_stone', 1)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">- 1</button>
+                    <button onclick="applyOperation('sub_stone', 2)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">- 2</button>
+                    <button onclick="applyOperation('sub_stone', 4)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">- 4</button>
+                    <button onclick="applyOperation('sub_stone', 5)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">- 5</button>
+                </div>
+                <div class="flex items-center gap-1.5 w-full">
+                    <span class="text-[10px] font-header font-bold text-slate-500 w-12">SPLIT:</span>
+                    <button onclick="applyOperation('divide', 2)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">÷ 2</button>
+                    <button onclick="applyOperation('divide', 3)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">÷ 3</button>
+                    <button onclick="applyOperation('divide', 4)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">÷ 4</button>
+                    <button onclick="applyOperation('divide', 5)" class="action-btn flex-1 py-1 rounded-lg text-xs font-bold">÷ 5</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-3 text-center text-xs font-semibold text-slate-500">
+        Law Ting Pong Secondary School • Mathematics Department • 35th Anniversary Edition
+    </footer>
+
+    <!-- SOLUTION MODAL -->
+    <div id="solution-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white border-4 border-amber-400 max-w-md w-full p-6 rounded-3xl shadow-2xl text-center transform scale-95 transition-transform duration-300" id="modal-content">
+            
+            <h3 id="modal-title" class="font-header text-2xl font-bold text-amber-600 tracking-wide mb-1">
+                EXCELLENT!
+            </h3>
+            <p id="modal-subtitle" class="text-xs font-semibold text-slate-500 mb-4">
+                Here is the step-by-step path to the solution:
+            </p>
+
+            <div id="solution-path" class="bg-amber-50 rounded-2xl p-4 border border-amber-200 text-left font-mono text-sm space-y-2 mb-6 max-h-52 overflow-y-auto">
+                <!-- Steps dynamically appended -->
+            </div>
+
+            <button id="modal-action-btn" onclick="closeModalAndContinue()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-header font-bold text-base shadow-md hover:brightness-105 transition">
+                CONTINUE
+            </button>
+        </div>
+    </div>
+
+    <!-- AUDIO SYNTHESIS -->
+    <script>
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); }
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
+                    osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now); osc.stop(now + 0.4);
+                } else if (type === 'pop') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(200, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now); osc.stop(now + 0.08);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(160, now);
+                    osc.frequency.linearRampToValueAtTime(100, now + 0.2);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now); osc.stop(now + 0.2);
+                }
+            } catch(e) {}
+        }
+    </script>
+
+    <!-- GAME LOGIC ENGINE -->
+    <script>
+        // AUDITED MATHEMATICALLY VERIFIED QUESTION POOL
+        // LEVEL 1: Form a*x + b = c -> (c - b) > 0 AND (c - b) % a === 0
+        const LEVEL_1_POOL = [
+            { leftCoeff: 2, leftStones: 2, rightCoeff: 0, rightStones: 12 }, // 2x + 2 = 12 -> 2x = 10 -> x = 5
+            { leftCoeff: 3, leftStones: 1, rightCoeff: 0, rightStones: 10 }, // 3x + 1 = 10 -> 3x = 9 -> x = 3
+            { leftCoeff: 2, leftStones: 4, rightCoeff: 0, rightStones: 10 }, // 2x + 4 = 10 -> 2x = 6 -> x = 3
+            { leftCoeff: 4, leftStones: 3, rightCoeff: 0, rightStones: 11 }, // 4x + 3 = 11 -> 4x = 8 -> x = 2
+            { leftCoeff: 3, leftStones: 2, rightCoeff: 0, rightStones: 14 }, // 3x + 2 = 14 -> 3x = 12 -> x = 4
+            { leftCoeff: 5, leftStones: 1, rightCoeff: 0, rightStones: 16 }, // 5x + 1 = 16 -> 5x = 15 -> x = 3
+            { leftCoeff: 2, leftStones: 5, rightCoeff: 0, rightStones: 13 }, // 2x + 5 = 13 -> 2x = 8 -> x = 4
+            { leftCoeff: 3, leftStones: 4, rightCoeff: 0, rightStones: 13 }, // 3x + 4 = 13 -> 3x = 9 -> x = 3
+            { leftCoeff: 4, leftStones: 2, rightCoeff: 0, rightStones: 14 }, // 4x + 2 = 14 -> 4x = 12 -> x = 3
+            { leftCoeff: 2, leftStones: 6, rightCoeff: 0, rightStones: 16 }  // 2x + 6 = 16 -> 2x = 10 -> x = 5
+        ];
+
+        // LEVEL 2: Form bracketCoeff*(x + bracketConst) = rightCoeff*x + rightStones
+        // Expand: bracketCoeff*x + (bracketCoeff*bracketConst) = rightCoeff*x + rightStones
+        // Subtract var: (bracketCoeff - rightCoeff)*x + (bracketCoeff*bracketConst) = rightStones
+        // Subtract const: (bracketCoeff - rightCoeff)*x = rightStones - (bracketCoeff*bracketConst)
+        // MUST GUARANTEE: rightStones > (bracketCoeff*bracketConst) AND (rightStones - bracketCoeff*bracketConst) % (bracketCoeff - rightCoeff) === 0
+        const LEVEL_2_POOL = [
+            { bracketCoeff: 2, bracketConst: 1, rightCoeff: 1, rightStones: 6 },  // 2(x+1) = x+6  -> 2x+2=x+6  -> x+2=6  -> x=4
+            { bracketCoeff: 3, bracketConst: 1, rightCoeff: 1, rightStones: 9 },  // 3(x+1) = x+9  -> 3x+3=x+9  -> 2x+3=9 -> 2x=6 -> x=3
+            { bracketCoeff: 2, bracketConst: 2, rightCoeff: 1, rightStones: 7 },  // 2(x+2) = x+7  -> 2x+4=x+7  -> x+4=7  -> x=3
+            { bracketCoeff: 4, bracketConst: 1, rightCoeff: 2, rightStones: 10 }, // 4(x+1) = 2x+10 -> 4x+4=2x+10-> 2x+4=10-> 2x=6 -> x=3
+            { bracketCoeff: 3, bracketConst: 2, rightCoeff: 1, rightStones: 12 }, // 3(x+2) = x+12 -> 3x+6=x+12 -> 2x+6=12-> 2x=6 -> x=3
+            { bracketCoeff: 2, bracketConst: 3, rightCoeff: 1, rightStones: 8 },  // 2(x+3) = x+8  -> 2x+6=x+8  -> x+6=8  -> x=2
+            { bracketCoeff: 3, bracketConst: 1, rightCoeff: 2, rightStones: 7 },  // 3(x+1) = 2x+7 -> 3x+3=2x+7 -> x+3=7  -> x=4
+            { bracketCoeff: 5, bracketConst: 1, rightCoeff: 2, rightStones: 11 }, // 5(x+1) = 2x+11-> 5x+5=2x+11-> 3x+5=11-> 3x=6 -> x=2
+            { bracketCoeff: 2, bracketConst: 4, rightCoeff: 1, rightStones: 10 }, // 2(x+4) = x+10 -> 2x+8=x+10 -> x+8=10 -> x=2
+            { bracketCoeff: 4, bracketConst: 1, rightCoeff: 1, rightStones: 13 }  // 4(x+1) = x+13 -> 4x+4=x+13 -> 3x+4=13-> 3x=9 -> x=3
+        ];
+
+        // GAME STATE
+        let currentLevel = 1;
+        let selectedQuestions = [];
+        let questionIndex = 0;
+        let score = 0;
+        let lives = 3;
+        let timeLeft = 45;
+        let timerInterval = null;
+        let isSolved = false;
+
+        let curState = {
+            hasBrackets: false,
+            bracketCoeff: 1,
+            bracketConst: 0,
+            leftCoeff: 2,
+            leftStones: 2,
+            rightCoeff: 0,
+            rightStones: 12,
+            steps: []
+        };
+
+        window.onload = function() {
+            document.body.addEventListener('click', () => initAudio(), { once: true });
+            startLevel(1);
+        };
+
+        function switchLevelTab(lvl) {
+            currentLevel = lvl;
+            document.getElementById('tab-lvl-1').classList.toggle('active', lvl === 1);
+            document.getElementById('tab-lvl-2').classList.toggle('active', lvl === 2);
+            startLevel(lvl);
+        }
+
+        function startLevel(lvl) {
+            currentLevel = lvl;
+            // Select 3 random questions from pool
+            const pool = (lvl === 1 ? LEVEL_1_POOL : LEVEL_2_POOL).slice();
+            // Shuffle
+            for (let i = pool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            selectedQuestions = pool.slice(0, 3);
+            questionIndex = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            isSolved = false;
+            const q = selectedQuestions[questionIndex];
+            curState.steps = [];
+
+            if (currentLevel === 1) {
+                curState.hasBrackets = false;
+                curState.leftCoeff = q.leftCoeff;
+                curState.leftStones = q.leftStones;
+                curState.rightCoeff = 0;
+                curState.rightStones = q.rightStones;
+                curState.steps.push(`${curState.leftCoeff}x + ${curState.leftStones} = ${curState.rightStones}`);
+            } else {
+                curState.hasBrackets = true;
+                curState.bracketCoeff = q.bracketCoeff;
+                curState.bracketConst = q.bracketConst;
+                curState.leftCoeff = q.bracketCoeff;
+                curState.leftStones = q.bracketCoeff * q.bracketConst;
+                curState.rightCoeff = q.rightCoeff;
+                curState.rightStones = q.rightStones;
+                curState.steps.push(`${curState.bracketCoeff}(x + ${curState.bracketConst}) = ${curState.rightCoeff}x + ${curState.rightStones}`);
+            }
+
+            document.getElementById('question-progress').innerText = `Question ${questionIndex + 1} / 3`;
+            document.getElementById('btn-expand').disabled = !curState.hasBrackets;
+
+            resetTimer();
+            updateUI();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = currentLevel === 1 ? 40 : 55;
+            document.getElementById('timer-text').innerText = `${timeLeft}s`;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-text').innerText = `${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function updateUI() {
+            // Formula Display Text
+            let formulaStr = "";
+            if (curState.hasBrackets) {
+                formulaStr = `${curState.bracketCoeff}(x + ${curState.bracketConst}) = ${curState.rightCoeff > 0 ? (curState.rightCoeff === 1 ? 'x + ' : curState.rightCoeff + 'x + ') : ''}${curState.rightStones}`;
+            } else {
+                let leftStr = "";
+                if (curState.leftCoeff > 0) leftStr += (curState.leftCoeff === 1 ? 'x' : curState.leftCoeff + 'x');
+                if (curState.leftStones > 0) leftStr += (leftStr ? ` + ${curState.leftStones}` : curState.leftStones);
+                if (!leftStr) leftStr = "0";
+
+                let rightStr = "";
+                if (curState.rightCoeff > 0) rightStr += (curState.rightCoeff === 1 ? 'x' : curState.rightCoeff + 'x');
+                if (curState.rightStones > 0) rightStr += (rightStr ? ` + ${curState.rightStones}` : curState.rightStones);
+                if (!rightStr) rightStr = "0";
+
+                formulaStr = `${leftStr} = ${rightStr}`;
+            }
+            document.getElementById('active-formula').innerText = formulaStr;
+
+            // Render Left Pan
+            const leftPan = document.getElementById('left-pan-items');
+            leftPan.innerHTML = "";
+            if (curState.hasBrackets) {
+                for (let i = 0; i < curState.bracketCoeff; i++) {
+                    const box = document.createElement('div');
+                    box.className = 'gold-x-box px-3 py-1 text-white font-header font-bold text-xs flex items-center pop-anim';
+                    box.innerText = `(x + ${curState.bracketConst})`;
+                    leftPan.appendChild(box);
+                }
+            } else {
+                for (let i = 0; i < curState.leftCoeff; i++) {
+                    const box = document.createElement('div');
+                    box.className = 'gold-x-box w-9 h-9 text-slate-950 font-header font-black text-sm flex items-center justify-center pop-anim';
+                    box.innerText = 'x';
+                    leftPan.appendChild(box);
+                }
+                for (let i = 0; i < curState.leftStones; i++) {
+                    const stone = document.createElement('div');
+                    stone.className = 'granite-stone w-7 h-7 text-xs flex items-center justify-center pop-anim';
+                    stone.innerText = '1';
+                    leftPan.appendChild(stone);
+                }
+            }
+
+            // Render Right Pan
+            const rightPan = document.getElementById('right-pan-items');
+            rightPan.innerHTML = "";
+            for (let i = 0; i < curState.rightCoeff; i++) {
+                const box = document.createElement('div');
+                box.className = 'gold-x-box w-9 h-9 text-slate-950 font-header font-black text-sm flex items-center justify-center pop-anim';
+                box.innerText = 'x';
+                rightPan.appendChild(box);
+            }
+            for (let i = 0; i < curState.rightStones; i++) {
+                const stone = document.createElement('div');
+                stone.className = 'granite-stone w-7 h-7 text-xs flex items-center justify-center pop-anim';
+                stone.innerText = '1';
+                rightPan.appendChild(stone);
+            }
+
+            // Check solved condition: 1x = integer value
+            if (!curState.hasBrackets && curState.leftCoeff === 1 && curState.leftStones === 0 && curState.rightCoeff === 0 && curState.rightStones > 0) {
+                if (!isSolved) {
+                    isSolved = true;
+                    clearInterval(timerInterval);
+                    playSound('success');
+                    score += (timeLeft * 10) + 100;
+                    document.getElementById('score-val').innerText = score;
+                    setTimeout(() => showVictoryModal(), 500);
+                }
+            }
+        }
+
+        function applyOperation(type, val) {
+            if (isSolved) return;
+
+            if (type === 'expand') {
+                if (!curState.hasBrackets) return;
+                playSound('pop');
+                curState.hasBrackets = false;
+                document.getElementById('btn-expand').disabled = true;
+                curState.steps.push(`${curState.leftCoeff}x + ${curState.leftStones} = ${curState.rightCoeff > 0 ? curState.rightCoeff + 'x + ' : ''}${curState.rightStones}`);
+                updateUI();
+                return;
+            }
+
+            if (curState.hasBrackets) {
+                playSound('error');
+                showHint("Remove brackets first using Step 1!");
+                return;
+            }
+
+            if (type === 'sub_var') {
+                if (curState.leftCoeff >= val && curState.rightCoeff >= val) {
+                    playSound('pop');
+                    curState.leftCoeff -= val;
+                    curState.rightCoeff -= val;
+                    curState.steps.push(`${curState.leftCoeff}x + ${curState.leftStones} = ${curState.rightStones}`);
+                    updateUI();
+                } else {
+                    playSound('error');
+                    showHint(`Cannot subtract ${val}x because both sides do not have that many x boxes!`);
+                }
+            } else if (type === 'sub_stone') {
+                if (curState.leftStones >= val && curState.rightStones >= val) {
+                    playSound('pop');
+                    curState.leftStones -= val;
+                    curState.rightStones -= val;
+                    curState.steps.push(`${curState.leftCoeff}x = ${curState.rightStones}`);
+                    updateUI();
+                } else {
+                    playSound('error');
+                    showHint(`Cannot subtract ${val} stones because both sides do not have enough stones!`);
+                }
+            } else if (type === 'divide') {
+                if (curState.rightCoeff > 0) {
+                    playSound('error');
+                    showHint("Subtract all x variables from the right side before dividing!");
+                    return;
+                }
+                if (curState.leftStones > 0) {
+                    playSound('error');
+                    showHint("Subtract matching stones from both sides before dividing!");
+                    return;
+                }
+
+                if (curState.leftCoeff % val === 0 && curState.rightStones % val === 0) {
+                    playSound('pop');
+                    curState.leftCoeff /= val;
+                    curState.rightStones /= val;
+                    curState.steps.push(`x = ${curState.rightStones}`);
+                    updateUI();
+                } else {
+                    playSound('error');
+                    showHint(`Both sides (${curState.leftCoeff}x and ${curState.rightStones}) must be evenly divisible by ${val}!`);
+                }
+            }
+        }
+
+        function showHint(msg) {
+            const el = document.getElementById('formula-hint');
+            el.innerText = msg;
+            el.className = "text-xs font-bold text-red-600 mt-2 bg-red-50 px-4 py-1 rounded-full border border-red-200 animate-bounce";
+            setTimeout(() => {
+                el.innerText = "Perform the same operation on both sides to solve for x!";
+                el.className = "text-xs font-semibold text-amber-700 mt-2 bg-amber-50 px-4 py-1 rounded-full border border-amber-200/60";
+            }, 3500);
+        }
+
+        function showVictoryModal() {
+            const modal = document.getElementById('solution-modal');
+            const content = document.getElementById('modal-content');
+            const title = document.getElementById('modal-title');
+            const subtitle = document.getElementById('modal-subtitle');
+            const path = document.getElementById('solution-path');
+            const btn = document.getElementById('modal-action-btn');
+
+            title.innerText = "EXCELLENT SOLVE!";
+            title.className = "font-header text-2xl font-bold text-amber-600 tracking-wide mb-1";
+            subtitle.innerText = `You solved Question ${questionIndex + 1}! Solution: x = ${curState.rightStones}`;
+
+            path.innerHTML = "";
+            curState.steps.forEach((step, idx) => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between text-amber-900 border-b border-amber-200/60 pb-1";
+                item.innerHTML = `<span class="text-xs text-amber-600 font-bold">Step ${idx + 1}:</span> <span>${step}</span>`;
+                path.appendChild(item);
+            });
+
+            if (questionIndex < 2) {
+                btn.innerText = "NEXT QUESTION";
+                btn.onclick = function() {
+                    closeModal();
+                    questionIndex++;
+                    loadQuestion();
+                };
+            } else if (currentLevel === 1) {
+                btn.innerText = "ADVANCE TO LEVEL 2";
+                btn.onclick = function() {
+                    closeModal();
+                    switchLevelTab(2);
+                };
+            } else {
+                btn.innerText = "COMPLETE & RESTART";
+                btn.onclick = function() {
+                    closeModal();
+                    switchLevelTab(1);
+                };
+            }
+
+            openModal();
+        }
+
+        function handleTimeOut() {
+            playSound('error');
+            lives--;
+            updateHearts();
+
+            const title = document.getElementById('modal-title');
+            const subtitle = document.getElementById('modal-subtitle');
+            const path = document.getElementById('solution-path');
+            const btn = document.getElementById('modal-action-btn');
+
+            title.innerText = "TIME EXPIRED";
+            title.className = "font-header text-2xl font-bold text-red-600 tracking-wide mb-1";
+            subtitle.innerText = "Here is the correct solution path:";
+
+            path.innerHTML = "";
+            curState.steps.forEach((step, idx) => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between text-slate-600 border-b border-slate-200 pb-1";
+                item.innerHTML = `<span class="text-xs text-slate-400 font-bold">Step ${idx + 1}:</span> <span>${step}</span>`;
+                path.appendChild(item);
+            });
+
+            btn.innerText = "RETRY QUESTION";
+            btn.onclick = function() {
+                closeModal();
+                loadQuestion();
+            };
+
+            openModal();
+        }
+
+        function updateHearts() {
+            const container = document.getElementById('hearts-container');
+            container.innerHTML = "";
+            for (let i = 0; i < 3; i++) {
+                if (i < lives) container.innerHTML += `<i class="fa-solid fa-heart drop-shadow"></i>`;
+                else container.innerHTML += `<i class="fa-regular fa-heart opacity-30"></i>`;
+            }
+
+            if (lives <= 0) {
+                setTimeout(() => {
+                    alert("Game Over! Restarting Level 1.");
+                    lives = 3;
+                    score = 0;
+                    document.getElementById('score-val').innerText = score;
+                    updateHearts();
+                    switchLevelTab(1);
+                }, 400);
+            }
+        }
+
+        function openModal() {
+            const m = document.getElementById('solution-modal');
+            const c = document.getElementById('modal-content');
+            m.classList.remove('opacity-0', 'pointer-events-none');
+            c.classList.remove('scale-95');
+            c.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const m = document.getElementById('solution-modal');
+            const c = document.getElementById('modal-content');
+            m.classList.add('opacity-0', 'pointer-events-none');
+            c.classList.remove('scale-100');
+            c.classList.add('scale-95');
+        }
+
+        function resetGame() {
+            lives = 3;
+            score = 0;
+            document.getElementById('score-val').innerText = score;
+            updateHearts();
+            startLevel(currentLevel);
+        }
+    </script>
+</body>
+</html>
